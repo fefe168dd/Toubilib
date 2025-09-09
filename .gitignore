@@ -18,3 +18,9 @@ composer.phar
 composer.lock
 /app/vendor/
 /app/config/.env
+.env
+.dist
+toubirdvdb.env.dist
+toubipratdb.env.dist
+toubipatientdb.env
+toubiauthdb.env.dist
