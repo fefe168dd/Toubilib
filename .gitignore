@@ -24,3 +24,7 @@ toubirdvdb.env.dist
 toubipratdb.env.dist
 toubipatientdb.env
 toubiauthdb.env.dist
+toubiauthdb.env
+toubipratdb.env
+.gitignore
+toubirdvdb.env
