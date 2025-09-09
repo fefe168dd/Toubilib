@@ -2,19 +2,19 @@
 
 namespace toubilib\core\application\usecases;
 
-
-
+use toubilib\core\application\ports\api\ServicePraticienInterface;
+use toubilib\core\application\ports\spi\praticienRepository;
 
 class ServicePraticien implements ServicePraticienInterface
 {
-    private PraticienRepositoryInterface $praticienRepository;
+    private praticienRepository $PraticienRepository;
 
-    public function __construct(PraticienRepositoryInterface $praticienRepository)
+    public function __construct(praticienRepository $PraticienRepository)
     {
-        $this->praticienRepository = $praticienRepository;
+        $this->PraticienRepository = $PraticienRepository;
     }
 
     public function listerPraticiens(): array {
-    	
+        return $this->PraticienRepository->listerPraticiens();
     }
 }

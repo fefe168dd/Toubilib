@@ -1,10 +1,10 @@
 <?php
 
 namespace toubilib\core\domain\entities\praticien;
+use toubilib\core\domain\entities\praticien\Specialite;
 
 
-class Praticien
-{
+class Praticien{
     private int $id;
     private string $nom;
     private string $prenom;
