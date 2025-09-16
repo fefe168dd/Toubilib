@@ -8,5 +8,7 @@ interface PraticienRepository{
      * @return Praticien[]
      */
     public function listerPraticiens(): array;
+
+    public function PraticienParId(string $id): ?Praticien;
 }
 

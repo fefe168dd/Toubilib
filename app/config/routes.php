@@ -18,6 +18,7 @@ return function( \Slim\App $app):\Slim\App {
         return $response;
     });
     $app->get('/praticiens', \toubilib\api\actions\GetPraticiensAction::class);
+    $app->get('/praticiens/{id}', \toubilib\api\actions\GetPraticienByIdAction::class);
     $app->options('/{routes:.+}', function (Request $request, Response $response) {
         return $response;
     });

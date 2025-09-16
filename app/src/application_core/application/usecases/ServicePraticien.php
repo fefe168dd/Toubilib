@@ -5,6 +5,7 @@ namespace toubilib\core\application\usecases;
 use toubilib\core\application\ports\api\ServicePraticienInterface;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository;
 use toubilib\core\application\ports\api\dto\PraticienDTO;
+use toubilib\core\application\ports\api\dto\PraticienIdDTO;
 
 class ServicePraticien implements ServicePraticienInterface
 {
@@ -23,5 +24,12 @@ class ServicePraticien implements ServicePraticienInterface
         }
         
         return $praticiensDTO;
+    }
+    public function PraticienParId(string $id): ?PraticienIdDTO {
+        $praticien = $this->praticienRepository->PraticienParId($id);
+        if ($praticien) {
+            return new PraticienIdDTO($praticien);
+        }
+        return null;
     }
 }

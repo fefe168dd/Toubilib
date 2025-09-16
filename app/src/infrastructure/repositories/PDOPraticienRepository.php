@@ -28,12 +28,19 @@ class PDOPraticienRepository implements PraticienRepository
 
         return null;
     }
-    public function motifVisiteParId(int $id): ?\toubilib\core\domain\entities\praticien\MotifVisite {
-        $stmt = $this->pdo->prepare('SELECT * FROM  praticien2motif WHERE id = :praticien_id');
-        $stmt->execute(['id' => $id]);
+      public function motifVisiteParId(string $praticien_id): ?\toubilib\core\domain\entities\praticien\MotifVisite {
+        $stmt = $this->pdo->prepare('SELECT motif_id FROM praticien2motif WHERE praticien_id = :praticien_id');
+        $stmt->execute(['praticien_id' => $praticien_id]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        if (!$result) {
+            return null;
+        }
+        
         $stmt = $this->pdo->prepare('SELECT * FROM motif_visite WHERE id = :id');
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $result['motif_id']]);
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
         if ($data) {
             return new \toubilib\core\domain\entities\praticien\MotifVisite(
                 $data['id'],
@@ -41,25 +48,32 @@ class PDOPraticienRepository implements PraticienRepository
                 $data['libelle']
             );
         }
-        return null;
-
         
+        return null;
     }
 
-    public function moyenPaiementParId(int $id): ?\toubilib\core\domain\entities\praticien\MoyenPaiement {
-        $stmt = $this->pdo->prepare('SELECT * FROM praticien2moyen WHERE id = :praticien_id');
-        $stmt->execute(['id' => $id]);
+    public function moyenPaiementParId(string $praticien_id): ?\toubilib\core\domain\entities\praticien\MoyenPaiement {
+
+        $stmt = $this->pdo->prepare('SELECT moyen_id FROM praticien2moyen WHERE praticien_id = :praticien_id');
+        $stmt->execute(['praticien_id' => $praticien_id]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        if (!$result) {
+            return null;
+        }
+        
         $stmt = $this->pdo->prepare('SELECT * FROM moyen_paiement WHERE id = :id');
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $result['moyen_id']]);
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
         if ($data) {
             return new \toubilib\core\domain\entities\praticien\MoyenPaiement(
                 $data['id'],
                 $data['libelle']
             );
         }
+        
         return null;
-       
     }
 
     public function listerPraticiens(): array {
@@ -69,8 +83,8 @@ class PDOPraticienRepository implements PraticienRepository
         $praticiens = [];
         foreach ($praticiensData as $data) {
             $specialite = $this->specialiteParId((int)$data['specialite_id']);
-            $motifVisite = $this->motifVisiteParId((int)$data['id']);
-            $moyenPaiement = $this->moyenPaiementParId((int)$data['id']);
+            $motifVisite = $this->motifVisiteParId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParId((string)$data['id']);
             
             $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
                 $data['id'],
@@ -86,5 +100,30 @@ class PDOPraticienRepository implements PraticienRepository
         }
 
         return $praticiens;
+    }
+
+    public function praticienParId(string $id): ?\toubilib\core\domain\entities\praticien\Praticien {
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($data) {
+            $specialite = $this->specialiteParId((int)$data['specialite_id']);
+            $motifVisite = $this->motifVisiteParId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParId((string)$data['id']);
+
+            return new \toubilib\core\domain\entities\praticien\Praticien(
+                $data['id'],
+                $data['nom'],
+                $data['prenom'],
+                $data['ville'],
+                $data['email'],
+                $specialite,
+                $motifVisite,
+                $moyenPaiement
+            );
+        }
+
+        return null;
     }
 }
