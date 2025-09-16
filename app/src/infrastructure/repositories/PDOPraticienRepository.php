@@ -28,6 +28,39 @@ class PDOPraticienRepository implements PraticienRepository
 
         return null;
     }
+    public function motifVisiteParId(int $id): ?\toubilib\core\domain\entities\praticien\MotifVisite {
+        $stmt = $this->pdo->prepare('SELECT * FROM  praticien2motif WHERE id = :praticien_id');
+        $stmt->execute(['id' => $id]);
+        $stmt = $this->pdo->prepare('SELECT * FROM motif_visite WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data) {
+            return new \toubilib\core\domain\entities\praticien\MotifVisite(
+                $data['id'],
+                $data['specialite_id'],
+                $data['libelle']
+            );
+        }
+        return null;
+
+        
+    }
+
+    public function moyenPaiementParId(int $id): ?\toubilib\core\domain\entities\praticien\MoyenPaiement {
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien2moyen WHERE id = :praticien_id');
+        $stmt->execute(['id' => $id]);
+        $stmt = $this->pdo->prepare('SELECT * FROM moyen_paiement WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($data) {
+            return new \toubilib\core\domain\entities\praticien\MoyenPaiement(
+                $data['id'],
+                $data['libelle']
+            );
+        }
+        return null;
+       
+    }
 
     public function listerPraticiens(): array {
         $stmt = $this->pdo->query('SELECT * FROM praticien');
@@ -36,6 +69,8 @@ class PDOPraticienRepository implements PraticienRepository
         $praticiens = [];
         foreach ($praticiensData as $data) {
             $specialite = $this->specialiteParId((int)$data['specialite_id']);
+            $motifVisite = $this->motifVisiteParId((int)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParId((int)$data['id']);
             
             $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
                 $data['id'],
@@ -43,7 +78,9 @@ class PDOPraticienRepository implements PraticienRepository
                 $data['prenom'],
                 $data['ville'] ,
                 $data['email'],
-                $specialite
+                $specialite,
+                $motifVisite,
+                $moyenPaiement
             );
             $praticiens[] = $praticien;
         }

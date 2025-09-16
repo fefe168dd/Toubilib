@@ -2,6 +2,8 @@
 
 namespace toubilib\core\domain\entities\praticien;
 use toubilib\core\domain\entities\praticien\Specialite;
+use toubilib\core\domain\entities\praticien\MotifVisite;
+use toubilib\core\domain\entities\praticien\MoyenPaiement;
 
 
 class Praticien{
@@ -11,9 +13,11 @@ class Praticien{
     private string $ville;
     private string $email;
     private Specialite $specialite;
+    private MotifVisite $motifVisite;
+    private MoyenPaiement $moyenPaiement;
 
 
-    public function __construct(string $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite)
+    public function __construct(string $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite, MotifVisite $motifVisite, MoyenPaiement $moyenPaiement)
     {
         $this->id = $id;
         $this->nom = $nom;
@@ -21,6 +25,9 @@ class Praticien{
         $this->ville = $ville;
         $this->email = $email;
         $this->specialite = $specialite;
+        $this->motifVisite = $motifVisite;
+        $this->moyenPaiement = $moyenPaiement;
+
     }
     public function getId(): string
     {
@@ -45,5 +52,13 @@ class Praticien{
     public function getSpecialite(): Specialite
     {
         return $this->specialite;
+    }
+    public function getMotifVisite(): MotifVisite
+    {
+        return $this->motifVisite;
+    }
+    public function getMoyenPaiement(): MoyenPaiement
+    {
+        return $this->moyenPaiement;
     }
 }
