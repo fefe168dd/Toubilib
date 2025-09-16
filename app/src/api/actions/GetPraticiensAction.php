@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Api\Actions;
+namespace toubilib\api\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use toubilib\infra\repositories\PDOPraticienRepository;
+use toubilib\core\application\usecases\ServicePraticien;
 
 class GetPraticiensAction
 {
-    private PDOPraticienRepository $repository;
+    private ServicePraticien $service;
 
-    public function __construct(PDOPraticienRepository $repository)
+    public function __construct(ServicePraticien $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        $praticiens = $this->repository->listerPraticiens();
+        $praticiens = $this->service->listerPraticiens();
         $payload = json_encode($praticiens);
 
         $response->getBody()->write($payload);

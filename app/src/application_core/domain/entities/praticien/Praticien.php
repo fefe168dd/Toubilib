@@ -5,7 +5,7 @@ use toubilib\core\domain\entities\praticien\Specialite;
 
 
 class Praticien{
-    private int $id;
+    private string $id;
     private string $nom;
     private string $prenom;
     private string $ville;
@@ -13,7 +13,7 @@ class Praticien{
     private Specialite $specialite;
 
 
-    public function __construct(int $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite)
+    public function __construct(string $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite)
     {
         $this->id = $id;
         $this->nom = $nom;
@@ -22,7 +22,7 @@ class Praticien{
         $this->email = $email;
         $this->specialite = $specialite;
     }
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
