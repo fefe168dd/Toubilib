@@ -2,8 +2,9 @@
 namespace toubilib\core\application\ports\api\dto;
 
 use toubilib\core\domain\entities\praticien\Praticien;
+
 class PraticienDTO {
-    public int $id;
+    public string $id; 
     public string $nom;
     public string $prenom;
     public string $ville;

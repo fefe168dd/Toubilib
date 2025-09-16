@@ -7,16 +7,13 @@ use toubilib\core\domain\entities\praticien\Specialite;
 
 class PDOPraticienRepository implements PraticienRepository
 {
-
-
     private \PDO $pdo;
 
     public function __construct(\PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-
-    public function  specialiteParId(int $id): ?\toubilib\core\domain\entities\praticien\Specialite {
+    public function specialiteParId(int $id): ?\toubilib\core\domain\entities\praticien\Specialite {
         $stmt = $this->pdo->prepare('SELECT * FROM specialite WHERE id = :id');
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -31,6 +28,7 @@ class PDOPraticienRepository implements PraticienRepository
 
         return null;
     }
+
     public function listerPraticiens(): array {
         $stmt = $this->pdo->query('SELECT * FROM praticien');
         $praticiensData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -38,12 +36,13 @@ class PDOPraticienRepository implements PraticienRepository
         $praticiens = [];
         foreach ($praticiensData as $data) {
             $specialite = $this->specialiteParId((int)$data['specialite_id']);
+            
             $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
                 $data['id'],
                 $data['nom'],
                 $data['prenom'],
+                $data['ville'] ,
                 $data['email'],
-                $data['telephone'],
                 $specialite
             );
             $praticiens[] = $praticien;
@@ -51,5 +50,4 @@ class PDOPraticienRepository implements PraticienRepository
 
         return $praticiens;
     }
- 
 }
