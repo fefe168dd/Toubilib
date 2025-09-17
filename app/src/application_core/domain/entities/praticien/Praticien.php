@@ -13,11 +13,11 @@ class Praticien{
     private string $ville;
     private string $email;
     private Specialite $specialite;
-    private MotifVisite $motifVisite;
-    private MoyenPaiement $moyenPaiement;
+    private array $motifVisite;
+    private array $moyenPaiement;
 
 
-    public function __construct(string $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite, MotifVisite $motifVisite, MoyenPaiement $moyenPaiement)
+    public function __construct(string $id, string $nom, string $prenom, string $ville, string $email, Specialite $specialite, array $motifVisite, array $moyenPaiement)
     {
         $this->id = $id;
         $this->nom = $nom;
@@ -53,11 +53,11 @@ class Praticien{
     {
         return $this->specialite;
     }
-    public function getMotifVisite(): MotifVisite
+    public function getMotifVisite(): array
     {
         return $this->motifVisite;
     }
-    public function getMoyenPaiement(): MoyenPaiement
+    public function getMoyenPaiement(): array
     {
         return $this->moyenPaiement;
     }

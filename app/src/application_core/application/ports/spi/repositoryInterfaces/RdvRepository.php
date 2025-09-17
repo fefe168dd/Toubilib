@@ -1,0 +1,11 @@
+<?php 
+ namespace toubilib\core\application\ports\spi\repositoryInterfaces;
+    use toubilib\core\domain\entities\rdv\RendezVous;
+    use DateTime;
+
+    interface RdvRepository{
+        /**
+         * @return RendezVous[]
+         */
+        public function listerRdvOcuppePraticienParDate(DateTime $debut, DateTime $fin, string $practicien_id): array;
+    }

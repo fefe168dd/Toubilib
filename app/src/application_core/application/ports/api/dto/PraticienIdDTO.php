@@ -10,8 +10,8 @@ class PraticienIdDTO {
     public string $ville;
     public string $email;
     public SpecialiteDTO $specialite;
-    public MotifVisiteDTO $motifVisite;
-    public MoyenPaiementDTO $moyenPaiement ;
+    public array $motifVisite;
+    public array $moyenPaiement ;
 
     public function __construct(Praticien $praticien) {
         $this->id = $praticien->getId();
@@ -20,7 +20,7 @@ class PraticienIdDTO {
         $this->ville = $praticien->getVille();
         $this->email = $praticien->getEmail();
         $this->specialite = new SpecialiteDTO($praticien->getSpecialite());
-        $this->motifVisite = new MotifVisiteDTO($praticien->getMotifVisite());
-        $this->moyenPaiement = new MoyenPaiementDTO($praticien->getMoyenPaiement());
+        $this->motifVisite = array_map(fn($motif) => new MotifVisiteDTO($motif), $praticien->getMotifVisite());
+        $this->moyenPaiement = array_map(fn($moyen) => new MoyenPaiementDTO($moyen), $praticien->getMoyenPaiement());
     }
 }

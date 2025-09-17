@@ -28,54 +28,48 @@ class PDOPraticienRepository implements PraticienRepository
 
         return null;
     }
-      public function motifVisiteParId(string $praticien_id): ?\toubilib\core\domain\entities\praticien\MotifVisite {
-        $stmt = $this->pdo->prepare('SELECT motif_id FROM praticien2motif WHERE praticien_id = :praticien_id');
+    public function motifsVisiteParPraticienId(string $praticien_id): array {
+        $stmt = $this->pdo->prepare('
+            SELECT mv.* 
+            FROM motif_visite mv 
+            INNER JOIN praticien2motif p2m ON mv.id = p2m.motif_id 
+            WHERE p2m.praticien_id = :praticien_id
+        ');
         $stmt->execute(['praticien_id' => $praticien_id]);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        if (!$result) {
-            return null;
-        }
-        
-        $stmt = $this->pdo->prepare('SELECT * FROM motif_visite WHERE id = :id');
-        $stmt->execute(['id' => $result['motif_id']]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
-        if ($data) {
-            return new \toubilib\core\domain\entities\praticien\MotifVisite(
+        $motifs = [];
+        foreach ($results as $data) {
+            $motifs[] = new \toubilib\core\domain\entities\praticien\MotifVisite(
                 $data['id'],
                 $data['specialite_id'],
                 $data['libelle']
             );
         }
         
-        return null;
+        return $motifs;
     }
 
-    public function moyenPaiementParId(string $praticien_id): ?\toubilib\core\domain\entities\praticien\MoyenPaiement {
 
-        $stmt = $this->pdo->prepare('SELECT moyen_id FROM praticien2moyen WHERE praticien_id = :praticien_id');
+    public function moyenPaiementParPraticienId(string $praticien_id): array {
+        $stmt = $this->pdo->prepare('
+            SELECT mp.* 
+            FROM moyen_paiement mp INNER JOIN praticien2moyen p2mp ON mp.id = p2mp.moyen_id 
+            WHERE p2mp.praticien_id = :praticien_id
+        ');
         $stmt->execute(['praticien_id' => $praticien_id]);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        if (!$result) {
-            return null;
-        }
-        
-        $stmt = $this->pdo->prepare('SELECT * FROM moyen_paiement WHERE id = :id');
-        $stmt->execute(['id' => $result['moyen_id']]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
-        if ($data) {
-            return new \toubilib\core\domain\entities\praticien\MoyenPaiement(
+        $moyens = [];
+        foreach ($results as $data) {
+            $moyens[] = new \toubilib\core\domain\entities\praticien\MoyenPaiement(
                 $data['id'],
                 $data['libelle']
             );
         }
         
-        return null;
+        return $moyens;
     }
-
     public function listerPraticiens(): array {
         $stmt = $this->pdo->query('SELECT * FROM praticien');
         $praticiensData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -83,8 +77,8 @@ class PDOPraticienRepository implements PraticienRepository
         $praticiens = [];
         foreach ($praticiensData as $data) {
             $specialite = $this->specialiteParId((int)$data['specialite_id']);
-            $motifVisite = $this->motifVisiteParId((string)$data['id']);
-            $moyenPaiement = $this->moyenPaiementParId((string)$data['id']);
+            $motifVisite = $this->motifsVisiteParPraticienId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParPraticienId((string)$data['id']);
             
             $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
                 $data['id'],
@@ -109,8 +103,8 @@ class PDOPraticienRepository implements PraticienRepository
 
         if ($data) {
             $specialite = $this->specialiteParId((int)$data['specialite_id']);
-            $motifVisite = $this->motifVisiteParId((string)$data['id']);
-            $moyenPaiement = $this->moyenPaiementParId((string)$data['id']);
+            $motifVisite = $this->motifsVisiteParPraticienId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParPraticienId((string)$data['id']);
 
             return new \toubilib\core\domain\entities\praticien\Praticien(
                 $data['id'],
