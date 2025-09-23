@@ -5,7 +5,7 @@ use DateTime;
 use toubilib\core\domain\entities\rdv\RendezVous;
 
 class RdvDTO{
-    public string $id;          
+    public ?string $id;          
     public DateTime $dateHeureDebut;
     public DateTime $dateHeureFin;
     public string $praticienId;  

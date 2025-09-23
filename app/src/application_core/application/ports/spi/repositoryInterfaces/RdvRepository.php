@@ -13,4 +13,6 @@
          * Consulter un rendez-vous par son identifiant
          */
         public function consulterRendezVousParId(string $id): ?RendezVous;
+
+        public function creerRendezVous(RendezVous $rdv): RendezVous;
     }

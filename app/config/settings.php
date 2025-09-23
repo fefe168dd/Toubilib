@@ -10,6 +10,8 @@ use toubilib\api\actions\GetRdvOcuppePraticienParDate;
 use toubilib\core\application\ports\api\ServiceRdvInterface;
 use toubilib\core\application\usecases\ServiceRdv;
 use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepository;
+use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepository;
+use toubilib\infra\repositories\PDOPatientRepository;
 use toubilib\infra\repositories\PDORdvRepository;
 
 
@@ -38,11 +40,20 @@ return [
 
     // Service RDV
     ServiceRdvInterface::class => function (ContainerInterface $c) {
-        return new ServiceRdv($c->get(RdvRepository::class));
+        return new ServiceRdv(
+            $c->get(RdvRepository::class),
+            $c->get(PraticienRepository::class),
+            $c->get(PatientRepository::class)
+        );
     },
 
     // Repository RDV
     RdvRepository::class => fn(ContainerInterface $c) => new PDORdvRepository($c->get('rdv.pdo')),
+
+    // Repository Patient
+    PatientRepository::class => fn(ContainerInterface $c) => new PDOPatientRepository($c->get('patient.pdo')),
+
+    PraticienRepository::class => fn(ContainerInterface $c) => new PDOPraticienRepository($c->get('praticien.pdo')),
 
 
     // infra
@@ -58,6 +69,14 @@ return [
         $dsn = "{$config['rdv.driver']}:host={$config['rdv.host']};dbname={$config['rdv.database']}";
         $user = $config['rdv.username'];
         $password = $config['rdv.password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
+
+    'patient.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file($c->get('env.config'));
+        $dsn = "{$config['pat.driver']}:host={$config['pat.host']};dbname={$config['pat.database']}";
+        $user = $config['pat.username'];
+        $password = $config['pat.password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     },
 
