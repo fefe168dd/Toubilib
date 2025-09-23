@@ -6,6 +6,12 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository
 use toubilib\core\application\ports\api\ServicePraticienInterface;
 use toubilib\core\application\usecases\ServicePraticien;
 use toubilib\infra\repositories\PDOPraticienRepository;
+use toubilib\api\actions\GetRdvOcuppePraticienParDate;
+use toubilib\core\application\ports\api\ServiceRdvInterface;
+use toubilib\core\application\usecases\ServiceRdv;
+use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepository;
+use toubilib\infra\repositories\PDORdvRepository;
+
 
 return [
 
@@ -23,7 +29,21 @@ return [
     // service
     ServicePraticienInterface::class => function (ContainerInterface $c) {
         return new ServicePraticien($c->get(PraticienRepository::class));
+            },
+
+        // Action RDV
+    GetRdvOcuppePraticienParDate::class => function (ContainerInterface $c) {
+        return new GetRdvOcuppePraticienParDate($c->get(ServiceRdvInterface::class));
     },
+
+    // Service RDV
+    ServiceRdvInterface::class => function (ContainerInterface $c) {
+        return new ServiceRdv($c->get(RdvRepository::class));
+    },
+
+    // Repository RDV
+    RdvRepository::class => fn(ContainerInterface $c) => new PDORdvRepository($c->get('rdv.pdo')),
+
 
     // infra
     'praticien.pdo' => function (ContainerInterface $c) {
@@ -43,5 +63,5 @@ return [
 
 
     PraticienRepository::class => fn(ContainerInterface $c) => new PDOPraticienRepository($c->get('praticien.pdo')),
-    
+
 ];

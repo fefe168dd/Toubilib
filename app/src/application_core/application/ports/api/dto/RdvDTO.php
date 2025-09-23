@@ -5,11 +5,12 @@ use DateTime;
 use toubilib\core\domain\entities\rdv\RendezVous;
 
 class RdvDTO{
-    public int $id;
+    public string $id;          
     public DateTime $dateHeureDebut;
     public DateTime $dateHeureFin;
-    public int $praticienId;
-    public int $patientId;
+    public string $praticienId;  
+    public string $patientId;   
+    public string $motifVisite; 
 
     public function __construct(RendezVous $rdv){
         $this->id = $rdv->getId();
@@ -17,5 +18,6 @@ class RdvDTO{
         $this->dateHeureFin = $rdv->getDateHeureFin();
         $this->praticienId = $rdv->getPraticienId();
         $this->patientId = $rdv->getPatientId();
+        $this->motifVisite = $rdv->getMotifVisite();
     }
 }
