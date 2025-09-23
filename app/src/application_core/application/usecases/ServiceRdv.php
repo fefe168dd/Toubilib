@@ -21,4 +21,12 @@ class ServiceRdv implements ServiceRdvInterface {
         }
         return $rdvsDTO;
     }
+
+    public function consulterRendezVousParId(string $id): ?RdvDTO {
+        $rdv = $this->rdvRepository->consulterRendezVousParId($id);
+        if ($rdv) {
+            return new RdvDTO($rdv);
+        }
+        return null;
+    }
 }

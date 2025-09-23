@@ -41,4 +41,27 @@ class PDORdvRepository implements RdvRepository {
         }
         return $rdvs;
     }
+
+    public function consulterRendezVousParId(string $id): ?RendezVous {
+        $stmt = $this->pdo->prepare('
+            SELECT id, praticien_id, patient_id, date_heure_debut, date_heure_fin, motif_visite 
+            FROM rdv
+            WHERE id = :id
+        ');
+        
+        $stmt->execute(['id' => $id]);
+        
+        if ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            return new RendezVous(
+                $row['id'],
+                $row['praticien_id'],
+                $row['patient_id'],
+                new DateTime($row['date_heure_debut']),
+                new DateTime($row['date_heure_fin']),
+                $row['motif_visite']
+            );
+        }
+        
+        return null;
+    }
 }

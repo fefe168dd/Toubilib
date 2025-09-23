@@ -8,4 +8,9 @@
          * @return RendezVous[]
          */
         public function listerRdvOcuppePraticienParDate(DateTime $debut, DateTime $fin, string $practicien_id): array;
+        
+        /**
+         * Consulter un rendez-vous par son identifiant
+         */
+        public function consulterRendezVousParId(string $id): ?RendezVous;
     }
