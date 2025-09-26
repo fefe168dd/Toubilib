@@ -11,14 +11,30 @@ class RendezVous{
     private DateTime $dateHeureDebut;
     private DateTime $dateHeureFin;
     private string $motif_visite;
+    private int $status; // 0 = actif, 1 = annulé
 
-    public function __construct(?string $id, string $praticien_id, string $patient_id, DateTime $dateHeureDebut, DateTime $dateHeureFin, string $motif_visite){
+    public function __construct(?string $id, string $praticien_id, string $patient_id, DateTime $dateHeureDebut, DateTime $dateHeureFin, string $motif_visite, int $status = 0){
         $this->id = $id;
         $this->praticien_id = $praticien_id;
         $this->patient_id = $patient_id;
         $this->dateHeureDebut = $dateHeureDebut;
         $this->dateHeureFin = $dateHeureFin;
         $this->motif_visite = $motif_visite;
+        $this->status = $status;
+    }
+    public function getStatus(): int {
+        return $this->status;
+    }
+
+    public function annuler(): void {
+        if ($this->status === 1) {
+            throw new \Exception("Le rendez-vous est déjà annulé.");
+        }
+        $now = new \DateTime();
+        if ($this->dateHeureDebut <= $now) {
+            throw new \Exception("Impossible d'annuler un rendez-vous passé ou en cours.");
+        }
+        $this->status = 1;
     }
     public function getId(): ?string{
         return $this->id;

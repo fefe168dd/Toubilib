@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 
 return function( \Slim\App $app):\Slim\App {
+    $app->get('/praticien/{id}/agenda', \toubilib\api\actions\GetAgendaPraticienAction::class);
 
 
 
@@ -27,7 +28,11 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/praticiens/{id}', \toubilib\api\actions\GetPraticienByIdAction::class);
     $app->get('/rdv/occupe', \toubilib\api\actions\GetRdvOcuppePraticienParDate::class);
     $app->get('/rdv/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class);
-    $app->post('/rdv/creer', \toubilib\api\actions\AddRendezVous::class);
+    $app->post('/rdv/creer', \toubilib\api\actions\AddRendezVous::class)
+        ->add(\App\Api\Middlewares\InputRendezVousMiddleware::class);
+
+    // Route RESTful pour annuler un rendez-vous
+    $app->post('/rdv/{id}/annuler', \toubilib\api\actions\AnnulerRendezVousAction::class);
     
 
     $app->options('/{routes:.+}', function (Request $request, Response $response) {

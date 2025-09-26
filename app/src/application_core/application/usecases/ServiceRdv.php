@@ -16,6 +16,29 @@ use toubilib\core\application\exceptions\PraticienNotAvailableException;
 use DateTime;
 
 class ServiceRdv implements ServiceRdvInterface {
+    public function listerAgendaPraticienParPeriode(string $praticienId, ?\DateTime $debut = null, ?\DateTime $fin = null): array {
+        // Par défaut, période = journée en cours
+        if ($debut === null) {
+            $debut = new \DateTime('today 00:00:00');
+        }
+        if ($fin === null) {
+            $fin = new \DateTime('today 23:59:59');
+        }
+        $rdvs = $this->rdvRepository->listerRdvOcuppePraticienParDate($debut, $fin, $praticienId);
+        $rdvsDTO = [];
+        foreach ($rdvs as $rdv) {
+            $rdvsDTO[] = new \toubilib\core\application\ports\api\dto\RdvDTO($rdv);
+        }
+        return $rdvsDTO;
+    }
+    public function annulerRendezVous(string $idRdv): void {
+        $rdv = $this->rdvRepository->consulterRendezVousParId($idRdv);
+        if (!$rdv) {
+            throw new \Exception("Le rendez-vous n'existe pas.");
+        }
+        $rdv->annuler();
+        $this->rdvRepository->sauvegarderRendezVous($rdv);
+    }
     private RdvRepository $rdvRepository;
     private PraticienRepository $praticienRepository;
     private PatientRepository $patientRepository;

@@ -14,5 +14,10 @@
          */
         public function consulterRendezVousParId(string $id): ?RendezVous;
 
-        public function creerRendezVous(RendezVous $rdv): RendezVous;
+    public function creerRendezVous(RendezVous $rdv): RendezVous;
+
+    /**
+     * Sauvegarde les modifications d'un rendez-vous existant
+     */
+    public function sauvegarderRendezVous(RendezVous $rdv): void;
     }
