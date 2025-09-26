@@ -1,4 +1,3 @@
-
 <?php
 
 namespace toubilib\core\application\exceptions;
