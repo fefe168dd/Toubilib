@@ -30,6 +30,10 @@ return function( \Slim\App $app):\Slim\App {
     $app->get('/rdvs/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class);
     $app->post('/rdvs/creer', \toubilib\api\actions\AddRendezVous::class)
         ->add(\App\Api\Middlewares\InputRendezVousMiddleware::class);
+    $app->get('/418', function (Request $request, Response $response) {
+        $response->getBody()->write("Je suis une théière");
+        return $response->withStatus(418);
+    });
 
     // Route RESTful pour annuler un rendez-vous
     $app->post('/rdvs/{id}/annuler', \toubilib\api\actions\AnnulerRendezVousAction::class);
