@@ -22,7 +22,7 @@ class Cors {
         return $response
             ->withHeader('Access-Control-Allow-Origin', $origin)
             ->withHeader('Access-Control-Allow-Headers', $requestHeaders)
-            /*->withHeader('Access-Control-Allow-Methods', implode(',',$methods))*/
+            ->withHeader('Access-Control-Allow-Methods', implode(',',$methods))
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             ->withHeader('Access-Control-Allow-Credentials', 'true');
     }
