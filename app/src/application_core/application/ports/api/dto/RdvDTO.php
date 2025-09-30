@@ -12,7 +12,6 @@ class RdvDTO{
     public string $patientId;
     public string $motifVisite;
     public int $status;
-    public string $patientUrl;
 
     public function __construct(RendezVous $rdv){
         $this->id = $rdv->getId();
@@ -22,6 +21,5 @@ class RdvDTO{
         $this->patientId = $rdv->getPatientId();
         $this->motifVisite = $rdv->getMotifVisite();
         $this->status = $rdv->getStatus();
-        $this->patientUrl = "/patient/" . $rdv->getPatientId();
     }
 }

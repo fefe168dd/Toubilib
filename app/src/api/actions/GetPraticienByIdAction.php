@@ -20,8 +20,17 @@ class GetPraticienByIdAction
         $id = $args['id'];
         $praticien = $this->service->PraticienParId($id);
         if ($praticien) {
+            // Ajouter les liens HATEOAS
+            $baseUrl = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost();
+            $praticienArray = json_decode(json_encode($praticien), true);
+            $praticienArray['_links'] = [
+                'self' => [
+                    'href' => $baseUrl . '/praticiens/' . $id
+                ]
+            ];
             $payload = json_encode($praticien);
             $response->getBody()->write($payload);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);

@@ -36,7 +36,9 @@ class GetRdvOcuppePraticienParDate
             $praticien_id = $params['praticien_id'];
 
             $rdvs = $this->service->listerRdvOcuppePraticienParDate($debut, $fin, $praticien_id);
+         
             $payload = json_encode($rdvs);
+
 
             $response->getBody()->write($payload);
             return $response

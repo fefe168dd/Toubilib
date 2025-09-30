@@ -20,7 +20,24 @@ class GetRendezVousByIdAction
         $id = $args['id'];
         $rdv = $this->service->consulterRendezVousParId($id);
         if ($rdv) {
-            $payload = json_encode($rdv);
+            $baseUrl = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost();
+            $rdvArray = json_decode(json_encode($rdv), true);
+            $rdvArray['_links'] = [
+                'self' => [
+                    'href' => $baseUrl . '/rendezvous/' . $id
+                ],
+                'praticien' => [
+                    'href' => $baseUrl . '/praticiens/' . (isset($rdvArray['praticien_id']) ? $rdvArray['praticien_id'] : '')
+                ],
+                'patient' => [
+                    'href' => $baseUrl . '/patients/' . (isset($rdvArray['patient_id']) ? $rdvArray['patient_id'] : '')
+                ],
+                'annuler' => [
+                    'href' => $baseUrl . '/rdvs/' . $id . '/annuler',
+                    'method' => 'POST'
+                ]
+            ];
+            $payload = json_encode($rdvArray);
             $response->getBody()->write($payload);
             return $response
                 ->withHeader('Content-Type', 'application/json')
