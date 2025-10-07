@@ -22,6 +22,12 @@ use toubilib\api\actions\SignInAction;
 use toubilib\api\actions\RefreshTokenAction;
 use toubilib\api\provider\AuthProviderInterface;
 use toubilib\api\provider\JwtAuthProvider;
+use toubilib\api\middlewares\AuthnMiddleware;
+use toubilib\api\actions\GetUserProfileAction;
+use toubilib\api\actions\PraticienOnlyAction;
+use toubilib\application_core\domain\entities\auth\AuthzServiceInterface;
+use toubilib\application_core\application\usecases\AuthzService;
+use toubilib\api\middlewares\AuthzMiddleware;
 
 
 return [
@@ -46,6 +52,14 @@ return [
 
     RefreshTokenAction::class => function (ContainerInterface $c) {
         return new RefreshTokenAction($c->get(AuthProviderInterface::class));
+    },
+
+    GetUserProfileAction::class => function (ContainerInterface $c) {
+        return new GetUserProfileAction();
+    },
+
+    PraticienOnlyAction::class => function (ContainerInterface $c) {
+        return new PraticienOnlyAction();
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
@@ -76,6 +90,21 @@ return [
             3600,
             86400
         );
+    },
+
+    AuthnMiddleware::class => function (ContainerInterface $c) {
+        return new AuthnMiddleware($c->get(AuthProviderInterface::class));
+    },
+
+    AuthzServiceInterface::class => function (ContainerInterface $c) {
+        return new AuthzService(
+            $c->get(RdvRepository::class),
+            $c->get(PraticienRepository::class)
+        );
+    },
+
+    AuthzMiddleware::class => function (ContainerInterface $c) {
+        return new AuthzMiddleware($c->get(AuthzServiceInterface::class));
     },
 
     RdvRepository::class => fn(ContainerInterface $c) => new PDORdvRepository($c->get('rdv.pdo')),

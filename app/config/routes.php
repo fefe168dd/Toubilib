@@ -26,12 +26,23 @@ return function( \Slim\App $app):\Slim\App {
     });
     $app->get('/praticiens', \toubilib\api\actions\GetPraticiensAction::class);
     $app->get('/praticiens/{id}', \toubilib\api\actions\GetPraticienByIdAction::class);
+    $app->get('/praticien/{id}/agenda', \toubilib\api\actions\GetAgendaPraticienAction::class)
+        ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->post('/auth/login', \toubilib\api\actions\AuthenticateUserAction::class);
     $app->post('/auth/signin', \toubilib\api\actions\SignInAction::class);
     $app->post('/auth/refresh', \toubilib\api\actions\RefreshTokenAction::class);
+    $app->get('/auth/profile', \toubilib\api\actions\GetUserProfileAction::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
+    $app->get('/praticien/dashboard', \toubilib\api\actions\PraticienOnlyAction::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->get('/rdvs/occupe', \toubilib\api\actions\GetRdvOcuppePraticienParDate::class);
-    $app->get('/rdvs/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class);
+    $app->get('/rdvs/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class)
+        ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->post('/rdvs/creer', \toubilib\api\actions\AddRendezVous::class)
+        ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class)
         ->add(\toubilib\api\Middlewares\InputRendezVousMiddleware::class);
     $app->get('/418', function (Request $request, Response $response) {
         $response->getBody()->write("Je suis une théière");
@@ -39,7 +50,9 @@ return function( \Slim\App $app):\Slim\App {
     });
 
     // Route RESTful pour annuler un rendez-vous
-    $app->post('/rdvs/{id}/annuler', \toubilib\api\actions\AnnulerRendezVousAction::class);
+    $app->post('/rdvs/{id}/annuler', \toubilib\api\actions\AnnulerRendezVousAction::class)
+        ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     
 
     $app->options('/{routes:.+}', function (Request $request, Response $response) {
