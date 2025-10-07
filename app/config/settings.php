@@ -18,6 +18,10 @@ use toubilib\application_core\application\usecases\AuthService;
 use toubilib\application_core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
 use toubilib\infrastructure\repositories\PDOUserRepository;
 use toubilib\api\actions\AuthenticateUserAction;
+use toubilib\api\actions\SignInAction;
+use toubilib\api\actions\RefreshTokenAction;
+use toubilib\api\provider\AuthProviderInterface;
+use toubilib\api\provider\JwtAuthProvider;
 
 
 return [
@@ -28,27 +32,30 @@ return [
     'toubilib.db.config' => __DIR__ . '/toubilib.db.ini',
     'env.config' => __DIR__ . '/.env.dist',
 
-    // application
     GetPraticiensAction::class => function (ContainerInterface $c) {
         return new GetPraticiensAction($c->get(ServicePraticienInterface::class));
     },
 
-    // Action Auth
     AuthenticateUserAction::class => function (ContainerInterface $c) {
         return new AuthenticateUserAction($c->get(AuthServiceInterface::class));
     },
 
-    // service
+    SignInAction::class => function (ContainerInterface $c) {
+        return new SignInAction($c->get(AuthProviderInterface::class));
+    },
+
+    RefreshTokenAction::class => function (ContainerInterface $c) {
+        return new RefreshTokenAction($c->get(AuthProviderInterface::class));
+    },
+
     ServicePraticienInterface::class => function (ContainerInterface $c) {
         return new ServicePraticien($c->get(PraticienRepository::class));
             },
 
-        // Action RDV
     GetRdvOcuppePraticienParDate::class => function (ContainerInterface $c) {
         return new GetRdvOcuppePraticienParDate($c->get(ServiceRdvInterface::class));
     },
 
-    // Service RDV
     ServiceRdvInterface::class => function (ContainerInterface $c) {
         return new ServiceRdv(
             $c->get(RdvRepository::class),
@@ -57,18 +64,24 @@ return [
         );
     },
 
-    // Service Auth
     AuthServiceInterface::class => function (ContainerInterface $c) {
         return new AuthService($c->get(UserRepositoryInterface::class));
     },
 
-    // Repository RDV
+    AuthProviderInterface::class => function (ContainerInterface $c) {
+        return new JwtAuthProvider(
+            $c->get(AuthServiceInterface::class),
+            'your-super-secret-jwt-key-change-in-production',
+            'HS256',
+            3600,
+            86400
+        );
+    },
+
     RdvRepository::class => fn(ContainerInterface $c) => new PDORdvRepository($c->get('rdv.pdo')),
 
-    // Repository Patient
     PatientRepository::class => fn(ContainerInterface $c) => new PDOPatientRepository($c->get('patient.pdo')),
 
-    // Repository User
     UserRepositoryInterface::class => fn(ContainerInterface $c) => new PDOUserRepository($c->get('auth.pdo')),
 
     PraticienRepository::class => fn(ContainerInterface $c) => new PDOPraticienRepository($c->get('praticien.pdo')),
