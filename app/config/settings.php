@@ -13,6 +13,11 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepository;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepository;
 use toubilib\infra\repositories\PDOPatientRepository;
 use toubilib\infra\repositories\PDORdvRepository;
+use toubilib\application_core\domain\entities\auth\AuthServiceInterface;
+use toubilib\application_core\application\usecases\AuthService;
+use toubilib\application_core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
+use toubilib\infrastructure\repositories\PDOUserRepository;
+use toubilib\api\actions\AuthenticateUserAction;
 
 
 return [
@@ -26,6 +31,11 @@ return [
     // application
     GetPraticiensAction::class => function (ContainerInterface $c) {
         return new GetPraticiensAction($c->get(ServicePraticienInterface::class));
+    },
+
+    // Action Auth
+    AuthenticateUserAction::class => function (ContainerInterface $c) {
+        return new AuthenticateUserAction($c->get(AuthServiceInterface::class));
     },
 
     // service
@@ -47,11 +57,19 @@ return [
         );
     },
 
+    // Service Auth
+    AuthServiceInterface::class => function (ContainerInterface $c) {
+        return new AuthService($c->get(UserRepositoryInterface::class));
+    },
+
     // Repository RDV
     RdvRepository::class => fn(ContainerInterface $c) => new PDORdvRepository($c->get('rdv.pdo')),
 
     // Repository Patient
     PatientRepository::class => fn(ContainerInterface $c) => new PDOPatientRepository($c->get('patient.pdo')),
+
+    // Repository User
+    UserRepositoryInterface::class => fn(ContainerInterface $c) => new PDOUserRepository($c->get('auth.pdo')),
 
     PraticienRepository::class => fn(ContainerInterface $c) => new PDOPraticienRepository($c->get('praticien.pdo')),
 
@@ -80,7 +98,13 @@ return [
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     },
 
+    'auth.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file($c->get('env.config'));
+        $dsn = "{$config['auth.driver']}:host={$config['auth.host']};dbname={$config['auth.database']}";
+        $user = $config['auth.username'];
+        $password = $config['auth.password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
 
-    PraticienRepository::class => fn(ContainerInterface $c) => new PDOPraticienRepository($c->get('praticien.pdo')),
 
 ];

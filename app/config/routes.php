@@ -22,14 +22,16 @@ return function( \Slim\App $app):\Slim\App {
         $response->getBody()->write("<a href=\"/rdvs/1\">Consulter le rendez-vous avec id 1</a> <br>");
         /*cree unn lien vers /rdv/creer  qui permet de creer un rdv test avec les valeurs args */
         $response->getBody()->write("<a href=\"/rdvs/creer\">Créer un rendez-vous (POST)</a> <br>");
+        $response->getBody()->write("<strong>Authentification (POST /auth/login)</strong> - Envoyez {'email': 'email@example.com', 'password': 'motdepasse'} <br>");
         return $response;
     });
     $app->get('/praticiens', \toubilib\api\actions\GetPraticiensAction::class);
     $app->get('/praticiens/{id}', \toubilib\api\actions\GetPraticienByIdAction::class);
+    $app->post('/auth/login', \toubilib\api\actions\AuthenticateUserAction::class);
     $app->get('/rdvs/occupe', \toubilib\api\actions\GetRdvOcuppePraticienParDate::class);
     $app->get('/rdvs/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class);
     $app->post('/rdvs/creer', \toubilib\api\actions\AddRendezVous::class)
-        ->add(\App\Api\Middlewares\InputRendezVousMiddleware::class);
+        ->add(\toubilib\api\Middlewares\InputRendezVousMiddleware::class);
     $app->get('/418', function (Request $request, Response $response) {
         $response->getBody()->write("Je suis une théière");
         return $response->withStatus(418);
