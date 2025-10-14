@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use toubilib\api\provider\AuthProviderInterface;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 /**
  * Middleware d'authentification JWT

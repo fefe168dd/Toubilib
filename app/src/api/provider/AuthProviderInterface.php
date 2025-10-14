@@ -2,8 +2,8 @@
 
 namespace toubilib\api\provider;
 
-use toubilib\application_core\domain\entities\auth\AuthTokenDTO;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\entities\auth\AuthTokenDTO;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 
 interface AuthProviderInterface

@@ -8,10 +8,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 
 return function( \Slim\App $app):\Slim\App {
-    $app->get('/praticien/{id}/agenda', \toubilib\api\actions\GetAgendaPraticienAction::class);
-
-
-
     $app->get('/', function (Request $request, Response $response) {
         $response->getBody()->write("Bienvenue sur l'API Toubilib !<br>");
         /*faire un lien vers /praticiens */
@@ -36,7 +32,8 @@ return function( \Slim\App $app):\Slim\App {
         ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->get('/praticien/dashboard', \toubilib\api\actions\PraticienOnlyAction::class)
         ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
-    $app->get('/rdvs/occupe', \toubilib\api\actions\GetRdvOcuppePraticienParDate::class);
+    $app->get('/rdvs/occupe', \toubilib\api\actions\GetRdvOcuppePraticienParDate::class)
+        ->add(\toubilib\api\middlewares\AuthnMiddleware::class);
     $app->get('/rdvs/{id}', \toubilib\api\actions\GetRendezVousByIdAction::class)
         ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
         ->add(\toubilib\api\middlewares\AuthnMiddleware::class);

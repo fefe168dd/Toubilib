@@ -1,6 +1,6 @@
 <?php
 
-namespace toubilib\application_core\domain\exceptions;
+namespace toubilib\core\domain\exceptions;
 
 /**
  * Exception lancée en cas de refus d'autorisation

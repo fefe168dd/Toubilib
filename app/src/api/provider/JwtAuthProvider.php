@@ -5,10 +5,10 @@ namespace toubilib\api\provider;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use toubilib\api\provider\AuthProviderInterface;
-use toubilib\application_core\domain\entities\auth\AuthServiceInterface;
-use toubilib\application_core\domain\entities\auth\AuthTokenDTO;
-use toubilib\application_core\domain\entities\auth\UserProfile;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\entities\auth\AuthServiceInterface;
+use toubilib\core\domain\entities\auth\AuthTokenDTO;
+use toubilib\core\domain\entities\auth\UserProfile;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 
 class JwtAuthProvider implements AuthProviderInterface

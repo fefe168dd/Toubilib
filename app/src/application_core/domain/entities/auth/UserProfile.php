@@ -1,7 +1,6 @@
 <?php
 
-namespace toubilib\application_core\domain\entities\auth;
-
+namespace toubilib\core\domain\entities\auth;
 
 class UserProfile
 {

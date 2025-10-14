@@ -1,6 +1,6 @@
 <?php
 
-namespace toubilib\application_core\application\ports\spi\repositoryInterfaces;
+namespace toubilib\core\application\ports\spi\repositoryInterfaces;
 
 
 interface UserRepositoryInterface

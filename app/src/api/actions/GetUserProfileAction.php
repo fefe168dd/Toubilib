@@ -4,7 +4,7 @@ namespace toubilib\api\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubilib\application_core\domain\entities\auth\UserProfile;
+use toubilib\core\domain\entities\auth\UserProfile;
 
 /**
  * Action pour obtenir le profil de l'utilisateur connecté

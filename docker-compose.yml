@@ -19,7 +19,7 @@ services:
     depends_on:
       - toubiprati.db
       - toubipatient.db
-      #- toubiauth.db
+      - toubiauth.db
     command: sh -c "composer install && php -S 0.0.0.0:80 -t /var/php/public"
 
     # service toubiprat.db : base de données postgresql pour les praticiens
@@ -57,6 +57,16 @@ services:
       - ./sql:/var/sql
 
 
+  toubiauth.db:
+    image: 'postgres:latest'
+    env_file: ./toubiauthdb.env
+    ports:
+      - '5435:5432'
+    networks:
+      - toubilib.net
+    volumes:
+      - ./sql:/var/sql
+    
   #
   # service administration des bases sql
   #

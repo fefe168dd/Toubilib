@@ -13,10 +13,10 @@ use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepository;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PatientRepository;
 use toubilib\infra\repositories\PDOPatientRepository;
 use toubilib\infra\repositories\PDORdvRepository;
-use toubilib\application_core\domain\entities\auth\AuthServiceInterface;
-use toubilib\application_core\application\usecases\AuthService;
-use toubilib\application_core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
-use toubilib\infrastructure\repositories\PDOUserRepository;
+use toubilib\core\domain\entities\auth\AuthServiceInterface;
+use toubilib\core\application\usecases\AuthService;
+use toubilib\core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
+use toubilib\infra\repositories\PDOUserRepository;
 use toubilib\api\actions\AuthenticateUserAction;
 use toubilib\api\actions\SignInAction;
 use toubilib\api\actions\RefreshTokenAction;
@@ -25,8 +25,8 @@ use toubilib\api\provider\JwtAuthProvider;
 use toubilib\api\middlewares\AuthnMiddleware;
 use toubilib\api\actions\GetUserProfileAction;
 use toubilib\api\actions\PraticienOnlyAction;
-use toubilib\application_core\domain\entities\auth\AuthzServiceInterface;
-use toubilib\application_core\application\usecases\AuthzService;
+use toubilib\core\domain\entities\auth\AuthzServiceInterface;
+use toubilib\core\application\usecases\AuthzService;
 use toubilib\api\middlewares\AuthzMiddleware;
 
 

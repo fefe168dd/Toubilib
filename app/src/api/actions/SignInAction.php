@@ -5,7 +5,7 @@ namespace toubilib\api\actions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use toubilib\api\provider\AuthProviderInterface;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 
 class SignInAction

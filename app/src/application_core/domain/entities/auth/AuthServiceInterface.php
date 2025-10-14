@@ -1,8 +1,8 @@
 <?php
 
-namespace toubilib\application_core\domain\entities\auth;
+namespace toubilib\core\domain\entities\auth;
 
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 
 interface AuthServiceInterface

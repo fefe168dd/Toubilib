@@ -1,8 +1,8 @@
 <?php
 
-namespace toubilib\application_core\domain\entities\auth;
+namespace toubilib\core\domain\entities\auth;
 
-use toubilib\application_core\domain\exceptions\AuthorizationException;
+use toubilib\core\domain\exceptions\AuthorizationException;
 
 /**
  * Interface pour le service d'autorisation des rendez-vous

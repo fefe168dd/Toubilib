@@ -1,10 +1,10 @@
 <?php
 
-namespace toubilib\application_core\application\usecases;
+namespace toubilib\core\application\usecases;
 
-use toubilib\application_core\domain\entities\auth\AuthzServiceInterface;
-use toubilib\application_core\domain\entities\auth\UserProfile;
-use toubilib\application_core\domain\exceptions\AuthorizationException;
+use toubilib\core\domain\entities\auth\AuthzServiceInterface;
+use toubilib\core\domain\entities\auth\UserProfile;
+use toubilib\core\domain\exceptions\AuthorizationException;
 use toubilib\core\application\ports\spi\repositoryInterfaces\RdvRepository;
 use toubilib\core\application\ports\spi\repositoryInterfaces\PraticienRepository;
 

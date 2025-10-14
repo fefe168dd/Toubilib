@@ -4,8 +4,8 @@ namespace toubilib\api\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use toubilib\application_core\domain\entities\auth\AuthServiceInterface;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
+use toubilib\core\domain\entities\auth\AuthServiceInterface;
+use toubilib\core\domain\exceptions\AuthenticationException;
 
 /**
  * Action pour authentifier un utilisateur

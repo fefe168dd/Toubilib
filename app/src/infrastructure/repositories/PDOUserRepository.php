@@ -1,8 +1,8 @@
 <?php
 
-namespace toubilib\infrastructure\repositories;
+namespace toubilib\infra\repositories;
 
-use toubilib\application_core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
+use toubilib\core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
 
 /**
  * Implémentation PDO du repository utilisateur

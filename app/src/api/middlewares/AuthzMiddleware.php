@@ -7,9 +7,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Slim\Routing\RouteContext;
-use toubilib\application_core\domain\entities\auth\AuthzServiceInterface;
-use toubilib\application_core\domain\entities\auth\UserProfile;
-use toubilib\application_core\domain\exceptions\AuthorizationException;
+use toubilib\core\domain\entities\auth\AuthzServiceInterface;
+use toubilib\core\domain\entities\auth\UserProfile;
+use toubilib\core\domain\exceptions\AuthorizationException;
 
 /**
  * Middleware d'autorisation pour les rendez-vous
@@ -90,6 +90,12 @@ class AuthzMiddleware implements MiddlewareInterface
             // Route: POST /rdvs/{id}/annuler
             $rdvId = $matches[1];
             $this->authzService->canCancelRendezVous($userProfile, $rdvId);
+            
+        } elseif ($uri === '/rdvs/occupe' && $method === 'GET') {
+            // Route: GET /rdvs/occupe - Réservé aux praticiens
+            if (!$userProfile->isPraticien()) {
+                throw new AuthorizationException("Accès refusé - Réservé aux praticiens");
+            }
             
         } else {
             // Route non protégée ou non reconnue - on laisse passer

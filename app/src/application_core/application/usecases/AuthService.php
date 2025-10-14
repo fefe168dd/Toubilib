@@ -1,11 +1,11 @@
 <?php
 
-namespace toubilib\application_core\application\usecases;
+namespace toubilib\core\application\usecases;
 
-use toubilib\application_core\domain\entities\auth\AuthServiceInterface;
-use toubilib\application_core\domain\entities\auth\UserProfile;
-use toubilib\application_core\domain\exceptions\AuthenticationException;
-use toubilib\application_core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
+use toubilib\core\domain\entities\auth\AuthServiceInterface;
+use toubilib\core\domain\entities\auth\UserProfile;
+use toubilib\core\domain\exceptions\AuthenticationException;
+use toubilib\core\application\ports\spi\repositoryInterfaces\UserRepositoryInterface;
 
 
 class AuthService implements AuthServiceInterface
