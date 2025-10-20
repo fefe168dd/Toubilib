@@ -32,4 +32,22 @@ class ServicePraticien implements ServicePraticienInterface
         }
         return null;
     }
+    public function praticienParSpecialite(string $specialite): array {
+        $praticiens = $this->praticienRepository->praticienParSpecialite($specialite);
+        $praticiensDTO = [];
+        foreach ($praticiens as $praticien) {
+            $praticiensDTO[] = new PraticienDTO($praticien);
+        }
+        
+        return $praticiensDTO;
+    }
+    public function praticienParVille(string $ville): array {
+        $praticiens = $this->praticienRepository->praticienParVille($ville);
+        $praticiensDTO = [];
+        foreach ($praticiens as $praticien) {
+            $praticiensDTO[] = new PraticienDTO($praticien);
+        }
+        
+        return $praticiensDTO;
+    }
 }

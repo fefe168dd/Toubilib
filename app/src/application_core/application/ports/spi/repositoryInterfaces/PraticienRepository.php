@@ -10,5 +10,9 @@ interface PraticienRepository{
     public function listerPraticiens(): array;
 
     public function PraticienParId(string $id): ?Praticien;
+
+    public function praticienParSpecialite(string $specialite): array;
+
+    public function praticienParVille(string $ville): array;
 }
 

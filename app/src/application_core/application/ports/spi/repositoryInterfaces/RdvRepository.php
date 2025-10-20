@@ -20,4 +20,7 @@
      * Sauvegarde les modifications d'un rendez-vous existant
      */
     public function sauvegarderRendezVous(RendezVous $rdv): void;
+
+    public function rdvHonore(string $rdvId): void;
+    public function rdvRefuse(string $rdvId): void;
     }

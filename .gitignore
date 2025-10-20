@@ -28,3 +28,4 @@ toubiauthdb.env
 toubipratdb.env
 .gitignore
 toubirdvdb.env
+env.config

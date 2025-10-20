@@ -163,4 +163,12 @@ class ServiceRdv implements ServiceRdvInterface {
         return $debut1 < $fin2 && $debut2 < $fin1;
     }
 
+    private function rdvHonore(string $rdvId): void {
+        $this->rdvRepository->rdvHonore($rdvId);
+    }
+
+    private function rdvRefuse(string $rdvId): void {
+        $this->rdvRepository->rdvRefuse($rdvId);
+    }
+
 }

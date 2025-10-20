@@ -98,8 +98,7 @@ class AuthzMiddleware implements MiddlewareInterface
             }
             
         } else {
-            // Route non protégée ou non reconnue - on laisse passer
-            // (l'action elle-même peut implémenter ses propres vérifications)
+            
             return;
         }
     }

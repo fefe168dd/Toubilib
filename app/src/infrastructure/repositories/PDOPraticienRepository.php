@@ -117,7 +117,69 @@ class PDOPraticienRepository implements PraticienRepository
                 $moyenPaiement
             );
         }
+   
 
         return null;
     }
+    public function praticienParSpecialite(string $specialiteLibelle): array {
+        $stmt = $this->pdo->prepare('
+            SELECT p.* 
+            FROM praticien p 
+            INNER JOIN specialite s ON p.specialite_id = s.id 
+            WHERE s.libelle ILIKE :libelle
+        ');
+        $stmt->execute(['libelle' => '%' . $specialiteLibelle . '%']);
+        $praticiensData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $praticiens = [];
+        foreach ($praticiensData as $data) {
+            $specialite = $this->specialiteParId((int)$data['specialite_id']);
+            $motifVisite = $this->motifsVisiteParPraticienId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParPraticienId((string)$data['id']);
+            
+            $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
+                $data['id'],
+                $data['nom'],
+                $data['prenom'],
+                $data['ville'],
+                $data['email'],
+                $specialite,
+                $motifVisite,
+                $moyenPaiement
+            );
+            $praticiens[] = $praticien;
+        }
+
+        return $praticiens;
+       
+}
+    public function praticienParville (string $ville): array {
+        $stmt = $this->pdo->prepare('
+            SELECT * FROM praticien WHERE ville ILIKE :ville
+        ');
+        $stmt->execute(['ville' => '%' . $ville . '%']);
+        $praticiensData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $praticiens = [];
+        foreach ($praticiensData as $data) {
+            $specialite = $this->specialiteParId((int)$data['specialite_id']);
+            $motifVisite = $this->motifsVisiteParPraticienId((string)$data['id']);
+            $moyenPaiement = $this->moyenPaiementParPraticienId((string)$data['id']);
+            
+            $praticien = new \toubilib\core\domain\entities\praticien\Praticien(
+                $data['id'],
+                $data['nom'],
+                $data['prenom'],
+                $data['ville'],
+                $data['email'],
+                $specialite,
+                $motifVisite,
+                $moyenPaiement
+            );
+            $praticiens[] = $praticien;
+        }
+
+        return $praticiens;
+    }
+    
 }

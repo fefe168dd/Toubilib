@@ -83,9 +83,15 @@ return [
     },
 
     AuthProviderInterface::class => function (ContainerInterface $c) {
+        $config = parse_ini_file($c->get('env.config'));
+        $secret = $config['auth.jwt.key'] ?? getenv('AUTH_JWT_KEY') ?? null;
+        if (!$secret) {
+            throw new \RuntimeException('JWT secret not configured. Add auth.jwt.key to your env file or set AUTH_JWT_KEY.');
+        }
+
         return new JwtAuthProvider(
             $c->get(AuthServiceInterface::class),
-            'your-super-secret-jwt-key-change-in-production',
+            $secret,
             'HS256',
             3600,
             86400

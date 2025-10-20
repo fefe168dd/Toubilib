@@ -41,6 +41,7 @@ return function( \Slim\App $app):\Slim\App {
         ->add(\toubilib\api\middlewares\AuthzMiddleware::class)
         ->add(\toubilib\api\middlewares\AuthnMiddleware::class)
         ->add(\toubilib\api\Middlewares\InputRendezVousMiddleware::class);
+    $app->get('/praticiens/specialite/{name}', \toubilib\api\actions\GetPracticienBySpecialite::class);
     $app->get('/418', function (Request $request, Response $response) {
         $response->getBody()->write("Je suis une théière");
         return $response->withStatus(418);

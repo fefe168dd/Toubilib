@@ -102,5 +102,19 @@ class PDORdvRepository implements RdvRepository {
 
         return $rdv;
     }
+    public function rdvHonore(string $rdvId): void {
+        $query = 'UPDATE rdv SET status = :status WHERE id = :id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':status', 1, \PDO::PARAM_INT); // 1 pour "honoré"
+        $stmt->bindValue(':id', $rdvId);
+        $stmt->execute();
+    }
+    public function rdvRefuse(string $rdvId): void {
+        $query = 'UPDATE rdv SET status = :status WHERE id = :id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':status', 2, \PDO::PARAM_INT); // 2 pour "refusé"
+        $stmt->bindValue(':id', $rdvId);
+        $stmt->execute();
+    }
    
 }
